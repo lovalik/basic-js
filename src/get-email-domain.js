@@ -10,9 +10,12 @@ const { NotImplementedError } = require('../extensions/index.js');
  * For the input 'prettyandsimple@example.com', the output should be 'example.com'
  *
  */
-function getEmailDomain(/* email */) {
+function getEmailDomain(adress) {
   throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+  let regexp = new RegExp(/[^\.@][\w\-]{0,25}.com/);
+  let array = adress.match( regexp );
+  // console.log(JSON.stringify(array))
+  return array.join(",")
 }
 
 module.exports = {
