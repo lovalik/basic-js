@@ -13,28 +13,30 @@ const { NotImplementedError } = require('../extensions/index.js');
  *
  */
 class DepthCalculator {
-    calculateDepth( array ) {
-      throw new NotImplementedError('Not implemented');
+      // throw new NotImplementedError('Not implemented');
+    
+      calculateDepth( array ) {
         let i = 1;
 
-        function checkArrayFlat( array ){
-          for( let item of array ){
-              if ( Array.isArray( item ) ){
-                  return item; 
-              }
-          }
-          return 1;
+        if ( this.checkArrayFlat( array ) === 1 ) {
+            console.log( `мас___сив${JSON.stringify(array)}___глубина${1}`)
+            return 1;
+        } else {
+            // let item = this.checkArrayFlat( array )
+            i = i + this.calculateDepth( array.flat() )
+            console.log( `массив${JSON.stringify(array)}___глубина${i}`)
+            return i;
         }
-
-      if ( checkArrayFlat( array ) === 1 ) {
-          return i;
-      } else {
-          let item = checkArrayFlat( array )
-          i = i + this.calculateDepth( item )
-          console.log( `___глубина${i}`)
-          return i;
-      }  
-  }
+    }
+    
+    checkArrayFlat( array ){
+        for( let item of array ){
+            if ( Array.isArray( item ) ){
+                return item; 
+            }
+        }
+        return 1;
+    }
 }
 
 module.exports = {
