@@ -32,35 +32,23 @@ const { NotImplementedError } = require('../extensions/index.js');
 
         if( this.chain.length === 0 ){
             this.chain = link
-            console.log(`добавление${ link }`)
         } else {
             this.chain = this.chain + links + link;
-            console.log(`добавление${ links + link }`)
         }
         
         return this
     },
 
     removeLink( position ) {
-        console.log("removeLink")
-
-        console.log( `===длина строки chain_${this.chain.length}` )
 
         let arr = this.chain.split("~~");
-        console.log( `===в массиве_${arr.length}`)
 
-        // try {
-            if( !checkPosition( arr, position ) || this.chain.length === 0 ){
-                this.chain = "";
-                throw new Error( `You can't remove incorrect link!` );
-            };
-        // } catch {
-            // this.chain = "";
-            // throw new Error( `You can't remove incorrect link!` );
-        // }
+        if( !checkPosition( arr, position ) || this.chain.length === 0 ){
+            this.chain = "";
+            throw new Error( `You can't remove incorrect link!` );
+        };
 
         function checkPosition( array, position ){
-            console.log( `массив${array}___позиция${position}`)
 
             if( typeof position !== "number" || isNaN( position ) ){
                 console.log( `1`)
@@ -81,7 +69,6 @@ const { NotImplementedError } = require('../extensions/index.js');
 
         arr.splice( position - 1, 1)
         this.chain = arr.join("~~")
-        console.log(`длина строки после удаления ${this.chain.length}`)
 
         return this
     },
