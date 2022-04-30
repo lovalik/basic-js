@@ -4,58 +4,84 @@ const { NotImplementedError } = require('../extensions/index.js');
  * Implement chainMaker object according to task description
  * 
  */
-const chainMaker = {
+ const chainMaker = {
+    chain: ``,
 
     getLength() {
+        console.log("длина")
         let numberOfLinks = 0;
-        throw new NotImplementedError('Not implemented');
-        for( let i = 0; i < this.chain.length; i++ ){
-            if( this.chain[i] === "(" ){
-                ++numberOfLinks 
+
+        if( this.chain.length > 0 ){
+            for( let i = 0; i < this.chain.length; i++ ){
+                if( this.chain[i] === "(" ){
+                    ++numberOfLinks 
+                }
             }
+            return numberOfLinks;
+        } else {
+            return 0;
         }
-        return numberOfLinks;
     },
 
     addLink( position ) {
+        if( position === undefined ){
+            position = ""
+        }
         const link = `( ${position} )`;
         const links = '~~';
-        this.chain = this.chain + links + link;
+
+        if( this.chain.length === 0 ){
+            this.chain = link
+            console.log(`добавление${ link }`)
+        } else {
+            this.chain = this.chain + links + link;
+            console.log(`добавление${ links + link }`)
+        }
         
         return this
     },
 
     removeLink( position ) {
-        const link = `( ${position} )`;
-        const links = '~~';
+        console.log("removeLink")
 
-        // if( isNaN( Number( position )) || !checkPosition( link, this.chain ) ){
-        //     throw new Error( `You can't remove incorrect link!` )
+        console.log( `===длина строки chain_${this.chain.length}` )
+
+        let arr = this.chain.split("~~");
+        console.log( `===в массиве_${arr.length}`)
+
+        // try {
+            if( !checkPosition( arr, position ) || this.chain.length === 0 ){
+                this.chain = "";
+                throw new Error( `You can't remove incorrect link!` );
+            };
+        // } catch {
+            // this.chain = "";
+            // throw new Error( `You can't remove incorrect link!` );
         // }
 
-        function checkPosition( link, chain ){
-            if( chain.includes( link ) ){
-                return true
-            } else {
+        function checkPosition( array, position ){
+            console.log( `массив${array}___позиция${position}`)
+
+            if( typeof position !== "number" || isNaN( position ) ){
+                console.log( `1`)
                 return false;
             }
-        }
-
-        function checkIsFirstPosition( link, links, chain ){
-            if( chain.includes( `${links}${link}` ) ){
-                return false
+            
+            if ( typeof position === "number" && !Number.isInteger( position) ) {
+                console.log( `2`)
+                return false;
+            } else if( position <= 0 || position >= array.length + 1 || isNaN(position) ){
+                console.log( `3`)
+                return false;
             } else {
-                return true;
+                console.log( `4`)
+                return true
             }
         }
 
-        if( checkIsFirstPosition( link, links, this.chain ) && this.chain.includes( `${links}` ) ){
-            this.chain = this.chain.replace(`${link}${links}`, "" );
-        } else if( checkIsFirstPosition( link, links, this.chain ) && !this.chain.includes( `${links}${link}` ) ){ 
-            this.chain = this.chain.replace(`${link}`, "" );
-        } else {
-            this.chain = this.chain.replace( `${links}${link}`, "" );
-        }
+        arr.splice( position - 1, 1)
+        this.chain = arr.join("~~")
+        console.log(`длина строки после удаления ${this.chain.length}`)
 
         return this
     },
@@ -68,7 +94,9 @@ const chainMaker = {
     },
 
     finishChain() {
-        delete this.chain;
+        let finalChain = this.chain;
+        this.chain = ""
+        return finalChain;
     }
 };
 
